@@ -93,18 +93,20 @@
     <!-- TAB 1: WORLD CLOCK & SOLAR ARC -->
     <section id="tab-clock" class="space-y-4">
       <div class="glass gold-border rounded-2xl p-4">
-        <div class="flex items-start justify-between gap-2">
-          <div>
+        <div class="grid grid-cols-[1fr_auto] items-start gap-2.5 overflow-hidden">
+          <div class="min-w-0">
             <span id="obsBadge" class="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
               ● SOLAR & LUNAR OBSERVATORY
             </span>
-            <div class="flex items-center gap-2 mt-1.5 flex-wrap">
-              <h2 id="heroCityName" class="text-lg font-bold text-white">Secunderabad</h2>
-              <span id="heroCityTemp" class="text-[11px] font-mono px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-200 border border-rose-400/30">🌡️ --°C</span>
+            <div class="mt-1.5 space-y-1">
+              <h2 id="heroCityName" class="text-lg font-bold text-white leading-snug break-words">Secunderabad</h2>
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <span id="heroCityTemp" class="text-[11px] font-mono px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-200 border border-rose-400/30">🌡️ --°C</span>
+              </div>
             </div>
-            <p id="heroCitySub" class="text-xs text-slate-400">IST • Home • 17.49°N, 78.50°E</p>
+            <p id="heroCitySub" class="text-xs text-slate-400 mt-1 truncate">IST • Home • 17.49°N, 78.50°E</p>
             <div class="flex items-center gap-1.5 mt-2 flex-wrap">
-              <select id="homeIndiaCitySelect" onchange="selectHomeIndiaCity(this.value)" class="bg-slate-900 border border-emerald-400/35 rounded-lg px-2 py-1 text-[11px] text-emerald-200 font-semibold max-w-[185px]">
+              <select id="homeIndiaCitySelect" onchange="selectHomeIndiaCity(this.value)" class="bg-slate-900 border border-emerald-400/35 rounded-lg px-2 py-1 text-[11px] text-emerald-200 font-semibold max-w-[165px]">
                 <option value="">🇮🇳 Select Indian City...</option>
                 <option value="Secunderabad|Asia/Kolkata|17.4948|78.5011">Secunderabad (TS)</option>
                 <option value="Hyderabad|Asia/Kolkata|17.3850|78.4867">Hyderabad (TS)</option>
@@ -135,12 +137,12 @@
               </button>
             </div>
           </div>
-          <div class="text-right shrink-0 max-w-[165px] space-y-1">
-            <div class="flex items-center justify-end gap-1 flex-wrap">
+          <div class="text-right shrink-0 space-y-1">
+            <div class="flex items-center justify-end gap-1">
               <span id="heroDayRel" class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-300 border border-amber-400/30">Today</span>
-              <div id="heroTime" class="text-lg sm:text-xl font-mono font-bold text-amber-300 leading-tight">--:--:--</div>
             </div>
-            <div id="heroDate" class="text-[11px] text-slate-400">---</div>
+            <div id="heroTime" class="text-xl font-mono font-bold text-amber-300 leading-none whitespace-nowrap">--:--:--</div>
+            <div id="heroDate" class="text-[11px] text-slate-400 whitespace-nowrap">---</div>
             <div class="flex items-center justify-end gap-1.5 pt-0.5">
               <span class="text-[10px] font-mono text-slate-400">12h</span>
               <input id="clockFormatSlider" type="range" min="0" max="1" step="1" value="0" oninput="toggleClockFormatSlider(this.value)" title="Slide between 12h and 24h clock" class="w-10 h-1.5 accent-amber-400 cursor-pointer" />
@@ -1464,8 +1466,17 @@
       return best.name;
     }
 
+    function stripWardOrDivision(str) {
+      if (!str) return '';
+      return str
+        .replace(/\b(ward|division|div)\s*[-#:]*\s*\d+\b/gi, '')
+        .replace(/\s{2,}/g, ' ')
+        .replace(/^[,\s-]+|[,\s-]+$/g, '')
+        .trim();
+    }
+
     async function resolvePlaceNameFromCoords(lat, lon) {
-      const fallback = findNearestKnownPlace(lat, lon);
+      const fallback = stripWardOrDivision(findNearestKnownPlace(lat, lon));
       try {
         const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}&zoom=14&addressdetails=1`, {
           headers: { 'Accept': 'application/json' }
@@ -1473,8 +1484,10 @@
         if (!res.ok) return fallback;
         const data = await res.json();
         const addr = data.address || {};
-        const locality = addr.suburb || addr.neighbourhood || addr.residential || addr.village || addr.town || addr.city_district || '';
-        const city = addr.city || addr.county || addr.state_district || '';
+        const rawLoc = addr.suburb || addr.neighbourhood || addr.residential || addr.village || addr.town || addr.city_district || '';
+        const rawCity = addr.city || addr.county || addr.state_district || '';
+        const locality = stripWardOrDivision(rawLoc);
+        const city = stripWardOrDivision(rawCity);
         if (locality && city && locality.toLowerCase() !== city.toLowerCase()) {
           return `${locality}, ${city}`;
         }
