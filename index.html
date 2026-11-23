@@ -196,6 +196,32 @@
             <div id="cardNextSunrise" class="text-xs font-mono font-bold text-white mt-0.5">06:22 AM</div>
           </div>
         </div>
+
+        <!-- GOLDEN HOUR, BLUE HOUR & SKY SYNC STATUS -->
+        <div class="mt-3 pt-3 border-t border-white/10 space-y-2">
+          <div class="flex items-center justify-between gap-2">
+            <span class="text-[10px] uppercase tracking-wider text-amber-300 font-bold">📸 GOLDEN HOUR & TWILIGHT WINDOWS</span>
+            <span id="weatherSyncBadge" class="text-[10px] font-mono text-slate-400">Syncing telemetry...</span>
+          </div>
+          <div class="grid grid-cols-2 gap-2 text-[11px]">
+            <div class="bg-amber-500/10 border border-amber-400/25 rounded-xl p-2">
+              <div class="text-[10px] text-amber-300 font-semibold">🌅 Morning Golden Hour</div>
+              <div id="cardMorningGolden" class="font-mono font-bold text-white mt-0.5">--:-- – --:--</div>
+            </div>
+            <div class="bg-orange-500/10 border border-orange-400/25 rounded-xl p-2">
+              <div class="text-[10px] text-orange-300 font-semibold">🌇 Evening Golden Hour</div>
+              <div id="cardEveningGolden" class="font-mono font-bold text-white mt-0.5">--:-- – --:--</div>
+            </div>
+            <div class="bg-sky-500/10 border border-sky-400/25 rounded-xl p-2">
+              <div class="text-[10px] text-sky-300 font-semibold">🌌 Dawn Blue Hour</div>
+              <div id="cardDawnBlue" class="font-mono font-bold text-white mt-0.5">--:-- – --:--</div>
+            </div>
+            <div class="bg-indigo-500/10 border border-indigo-400/25 rounded-xl p-2">
+              <div class="text-[10px] text-indigo-300 font-semibold">🌃 Dusk Blue Hour</div>
+              <div id="cardDuskBlue" class="font-mono font-bold text-white mt-0.5">--:-- – --:--</div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="flex items-center justify-between gap-2">
@@ -240,6 +266,13 @@
         </select>
       </div>
       <div id="cityList" class="grid grid-cols-2 gap-2.5"></div>
+      <div class="glass rounded-2xl p-3.5 space-y-2">
+        <div class="flex items-center justify-between gap-2">
+          <span class="text-[10px] uppercase tracking-wider text-sky-300 font-bold">🕒 LIVE WORLD TIMEZONE OVERLAP</span>
+          <span class="text-[10px] text-slate-400">Day / Night Call Window</span>
+        </div>
+        <div id="worldOverlapStrip" class="space-y-1.5"></div>
+      </div>
     </section>
 
     <!-- TAB 2: DRIK GANITA PANCHANGAM -->
@@ -323,6 +356,15 @@
             <label id="lblJyTob" class="text-[10px] text-slate-400 block mb-1">Time of Birth</label>
             <input id="jyTob" type="time" value="08:30" class="w-full bg-slate-900 border border-white/15 rounded-xl px-2.5 py-2 text-xs text-amber-200 font-mono" />
           </div>
+        </div>
+
+        <!-- SAVED FAMILY KUNDALI PROFILES -->
+        <div class="pt-1 space-y-1.5">
+          <div class="flex items-center justify-between gap-2">
+            <span class="text-[10px] uppercase tracking-wider text-emerald-300 font-bold">👨‍👩‍👦 SAVED FAMILY PROFILES</span>
+            <button type="button" onclick="saveCurrentJyProfile()" class="text-[10px] px-2 py-0.5 rounded-lg bg-emerald-500/20 border border-emerald-400/40 text-emerald-200 font-semibold">+ Save Current</button>
+          </div>
+          <div id="savedJyProfilesBar" class="flex flex-wrap gap-1.5"></div>
         </div>
 
         <button id="calcJathakamBtn" type="button" onclick="renderJathakam(); renderAll();" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-bold text-xs shadow-lg">
@@ -464,6 +506,18 @@
         <div class="flex items-center gap-1.5 flex-wrap"><span>📍 <strong id="originLabel" class="text-emerald-300">Secunderabad / Hyderabad</strong></span><span class="origin-live-temp-badge text-[10px] font-mono px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-200 border border-rose-400/30">🌡️ Loading...</span></div>
       </div>
 
+      <!-- MULTI-TEMPLE YATRA ROUTE PLANNER -->
+      <div id="yatraPlannerCard" class="glass gold-border rounded-2xl p-3.5 space-y-2.5">
+        <div class="flex items-center justify-between gap-2">
+          <div>
+            <span class="text-[10px] uppercase tracking-wider text-amber-400 font-bold">🛕 MULTI-TEMPLE YATRA PLANNER</span>
+            <h3 class="text-xs font-bold text-white">Build Your Pilgrimage Route & Darshan Checklist</h3>
+          </div>
+          <button type="button" onclick="clearYatraStops()" class="text-[10px] px-2 py-1 rounded-lg bg-white/10 text-slate-300">Clear</button>
+        </div>
+        <div id="yatraPlannerBody" class="text-xs text-slate-300">Tap "+ Add to Yatra" on any temple card below to compute multi-stop route distance and Google Maps multi-stop navigation.</div>
+      </div>
+
       <div id="templeListContainer" class="space-y-3.5"></div>
     </section>
 
@@ -513,6 +567,14 @@
         <p id="calHintText" class="text-[10px] text-slate-400 text-center mb-2.5">Tap any date below to inspect its complete Panchangam, Festivals & Puranic Story</p>
         <div class="grid grid-cols-7 text-center text-[10px] text-slate-400 font-semibold mb-1.5">
           <div class="text-rose-400">Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div class="text-amber-300">Sat</div>
+        </div>
+        <div class="flex gap-1.5 overflow-x-auto no-scrollbar mb-2">
+          <button type="button" data-calvrat="ALL" onclick="setCalVratFilter('ALL')" class="calvrat-chip px-2 py-0.5 rounded-full bg-amber-500 text-slate-950 font-bold text-[10px] shrink-0">All Days</button>
+          <button type="button" data-calvrat="FEST" onclick="setCalVratFilter('FEST')" class="calvrat-chip px-2 py-0.5 rounded-full bg-white/10 text-slate-200 text-[10px] shrink-0">🎉 Festivals</button>
+          <button type="button" data-calvrat="EKADASHI" onclick="setCalVratFilter('EKADASHI')" class="calvrat-chip px-2 py-0.5 rounded-full bg-white/10 text-slate-200 text-[10px] shrink-0">🪔 Ekadashi</button>
+          <button type="button" data-calvrat="POURNAMI" onclick="setCalVratFilter('POURNAMI')" class="calvrat-chip px-2 py-0.5 rounded-full bg-white/10 text-slate-200 text-[10px] shrink-0">🌕 Pournami</button>
+          <button type="button" data-calvrat="AMAVASYA" onclick="setCalVratFilter('AMAVASYA')" class="calvrat-chip px-2 py-0.5 rounded-full bg-white/10 text-slate-200 text-[10px] shrink-0">🌑 Amavasya</button>
+          <button type="button" data-calvrat="PRADOSHAM" onclick="setCalVratFilter('PRADOSHAM')" class="calvrat-chip px-2 py-0.5 rounded-full bg-white/10 text-slate-200 text-[10px] shrink-0">🔱 Pradosham</button>
         </div>
         <div id="calendarGrid" class="grid grid-cols-7 gap-1 text-center"></div>
       </div>
@@ -696,13 +758,18 @@
       setTxt('calHintText', d.calHint);
       setTxt('lblFestivalList', d.festListTitle);
 
+      renderSavedJyProfiles();
       renderJathakam();
       renderRashiPhalalu();
       renderAll();
     };
 
-    window.switchTab = (tabId) => {
-      ['clock', 'panchangam', 'jyothishyam', 'temples', 'sightseeing', 'festivals'].forEach(t => {
+    const VALID_TABS = ['clock', 'panchangam', 'jyothishyam', 'temples', 'sightseeing', 'festivals'];
+    window.switchTab = (tabId, skipScroll = false) => {
+      if (!VALID_TABS.includes(tabId)) tabId = 'clock';
+      try { localStorage.setItem('panchtattva_active_tab', tabId); } catch (e) {}
+      try { history.replaceState(null, '', '#' + tabId); } catch (e) {}
+      VALID_TABS.forEach(t => {
         const el = document.getElementById('tab-' + t);
         if (el) el.classList.toggle('hidden', t !== tabId);
       });
@@ -713,7 +780,7 @@
       });
       if (tabId === 'temples') renderTemples();
       if (tabId === 'sightseeing') renderLocalSightseeing();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (!skipScroll) window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     // 3. World Clock & Accurate Sun Arc Engine
@@ -799,6 +866,7 @@
           const temp = arr[i]?.current?.temperature_2m;
           if (typeof temp === 'number') cityTempCache[`${c.lat},${c.lon}`] = `${Math.round(temp * 10) / 10}°C`;
         });
+        lastWeatherSyncStr = new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
         tickClocks();
       } catch (e) {}
     }
@@ -916,6 +984,238 @@
       }
     }
 
+
+    // --- ENHANCEMENTS: GOLDEN HOUR, WORLD OVERLAP, FAMILY PROFILES, GOCHARA, YATRA & VRATAM FILTER ---
+    let lastWeatherSyncStr = '';
+    function formatMin12(m) {
+      const t = (Math.round(m) + 1440) % 1440;
+      const h = Math.floor(t / 60), min = t % 60;
+      return `${String(h % 12 || 12).padStart(2, '0')}:${String(min).padStart(2, '0')} ${h >= 12 ? 'PM' : 'AM'}`;
+    }
+
+    function updateGoldenHourAndOverlap(now, activeCity, sun) {
+      const mgEl = document.getElementById('cardMorningGolden');
+      const egEl = document.getElementById('cardEveningGolden');
+      const dbEl = document.getElementById('cardDawnBlue');
+      const dkEl = document.getElementById('cardDuskBlue');
+      if (mgEl) mgEl.textContent = `${formatMin12(sun.sr.total)} – ${formatMin12(sun.sr.total + 55)}`;
+      if (egEl) egEl.textContent = `${formatMin12(sun.ss.total - 55)} – ${formatMin12(sun.ss.total)}`;
+      if (dbEl) dbEl.textContent = `${formatMin12(sun.sr.total - 32)} – ${formatMin12(sun.sr.total - 5)}`;
+      if (dkEl) dkEl.textContent = `${formatMin12(sun.ss.total + 5)} – ${formatMin12(sun.ss.total + 32)}`;
+
+      const syncEl = document.getElementById('weatherSyncBadge');
+      if (syncEl) {
+        syncEl.textContent = lastWeatherSyncStr
+          ? `Live Sync • ${lastWeatherSyncStr}`
+          : (navigator.onLine ? 'Online • Ready' : 'Offline • Local Ephemeris');
+      }
+
+      const stripEl = document.getElementById('worldOverlapStrip');
+      if (stripEl) {
+        stripEl.innerHTML = cities.map((c, idx) => {
+          const cParts = new Date(now.toLocaleString('en-US', { timeZone: c.tz }));
+          const hr = cParts.getHours() + cParts.getMinutes() / 60;
+          const pct = Math.max(2, Math.min(98, (hr / 24) * 100));
+          const isWork = hr >= 9 && hr <= 20;
+          const tStr = now.toLocaleTimeString('en-US', { timeZone: c.tz, hour: '2-digit', minute: '2-digit', hour12: true });
+          return `
+            <div onclick="pickCity(${idx})" class="cursor-pointer p-2 rounded-xl bg-white/5 hover:bg-white/10 space-y-1">
+              <div class="flex items-center justify-between text-[11px]">
+                <span class="font-semibold text-white truncate">${c.name}</span>
+                <span class="font-mono ${isWork ? 'text-emerald-300' : 'text-indigo-300'}">${tStr} • ${isWork ? 'Day/Call Window' : 'Night'}</span>
+              </div>
+              <div class="h-1.5 rounded-full bg-slate-900 overflow-hidden relative">
+                <div class="absolute inset-y-0 left-[37.5%] right-[16.6%] bg-emerald-500/25"></div>
+                <div class="h-full bg-gradient-to-r from-indigo-400 via-amber-400 to-sky-400 rounded-full" style="width:${pct.toFixed(1)}%"></div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+    }
+
+    // Saved Family Kundali Profiles
+    const DEFAULT_JY_PROFILES = [
+      { id: 'prof_vinod', name: 'Vinod', dob: '1995-10-15', tob: '08:30', place: '17.3850|78.4867|Hyderabad / Secunderabad' },
+      { id: 'prof_thulja', name: 'Thulja', dob: '1997-05-12', tob: '09:15', place: '17.3850|78.4867|Hyderabad / Secunderabad' },
+      { id: 'prof_rudransh', name: 'Rudransh', dob: '2025-11-15', tob: '10:30', place: '17.3850|78.4867|Hyderabad / Secunderabad' }
+    ];
+
+    function getSavedJyProfiles() {
+      try {
+        const raw = localStorage.getItem('panchtattva_jy_profiles');
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed) && parsed.length) return parsed;
+        }
+      } catch (e) {}
+      return DEFAULT_JY_PROFILES;
+    }
+
+    function renderSavedJyProfiles() {
+      const bar = document.getElementById('savedJyProfilesBar');
+      if (!bar) return;
+      const list = getSavedJyProfiles();
+      bar.innerHTML = list.map(p => `
+        <button type="button" onclick="loadJyProfile('${p.id}')" class="px-2.5 py-1 rounded-full bg-white/10 hover:bg-amber-500/25 border border-white/15 text-[11px] text-amber-200 font-semibold">
+          👤 ${p.name}
+        </button>
+      `).join('');
+    }
+
+    window.loadJyProfile = (id) => {
+      const p = getSavedJyProfiles().find(x => x.id === id);
+      if (!p) return;
+      if (document.getElementById('jyName')) document.getElementById('jyName').value = p.name;
+      if (document.getElementById('jyDob')) document.getElementById('jyDob').value = p.dob;
+      if (document.getElementById('jyTob')) document.getElementById('jyTob').value = p.tob;
+      if (document.getElementById('jyPlace')) document.getElementById('jyPlace').value = p.place;
+      renderJathakam();
+      renderAll();
+    };
+
+    window.saveCurrentJyProfile = () => {
+      const name = (document.getElementById('jyName')?.value || '').trim();
+      const dob = document.getElementById('jyDob')?.value || '1995-10-15';
+      const tob = document.getElementById('jyTob')?.value || '08:30';
+      const place = document.getElementById('jyPlace')?.value || '17.3850|78.4867|Hyderabad / Secunderabad';
+      if (!name) return;
+      const list = getSavedJyProfiles();
+      const idx = list.findIndex(x => x.name.toLowerCase() === name.toLowerCase());
+      const entry = { id: idx >= 0 ? list[idx].id : 'prof_' + Date.now(), name, dob, tob, place };
+      if (idx >= 0) list[idx] = entry;
+      else list.push(entry);
+      try { localStorage.setItem('panchtattva_jy_profiles', JSON.stringify(list)); } catch (e) {}
+      renderSavedJyProfiles();
+    };
+
+    // Gochara Transit House from Selected Rashi on Selected Date
+    function buildGocharaTransitHtml(rashiIdx) {
+      const isTe = currentLang === 'te';
+      const city = cities[selectedCityIndex] || cities[0];
+      const pToday = getPanchangam(new Date(Date.UTC(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate(), 1, 0, 0)), city.tz);
+      const jd = getJulianDay(selectedDate);
+      const ayan = getLahiriAyanamsha(jd);
+      const T = (jd - 2451545.0) / 36525.0;
+      const jupIdx = Math.floor((((34.35 + 3034.906 * T - ayan) % 360) + 360) % 360 / 30);
+      const satIdx = Math.floor((((50.07 + 1222.114 * T - ayan) % 360) + 360) % 360 / 30);
+      const rahuIdx = Math.floor((((125.04 - 1934.136 * T - ayan) % 360) + 360) % 360 / 30);
+
+      const hMoon = ((pToday.rashiIdx - rashiIdx + 12) % 12) + 1;
+      const hSun = ((pToday.sunRashiIdx - rashiIdx + 12) % 12) + 1;
+      const hJup = ((jupIdx - rashiIdx + 12) % 12) + 1;
+      const hSat = ((satIdx - rashiIdx + 12) % 12) + 1;
+      const hRahu = ((rahuIdx - rashiIdx + 12) % 12) + 1;
+
+      const chandraNote = [1, 3, 6, 7, 10, 11].includes(hMoon)
+        ? (isTe ? 'చంద్రబలం అనుకూలం (శుభం)' : 'Chandra Balam Favorable')
+        : (hMoon === 8 ? (isTe ? 'అష్టమ చంద్రుడు (జాగ్రత్త)' : 'Ashtama Chandra (Caution)') : (isTe ? 'సాధారణ చంద్ర సంచారం' : 'Moderate Moon Transit'));
+
+      return `
+        <div class="p-2.5 rounded-xl bg-indigo-950/35 border border-indigo-400/25 space-y-1 text-[11px]">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-indigo-300">🌌 ${isTe ? 'గోచార స్థితి' : 'Gochara Transit'} (${datePicker.value})</span>
+            <span class="text-[10px] font-mono text-emerald-300">${chandraNote}</span>
+          </div>
+          <div class="text-slate-300 font-mono text-[10px]">
+            Chandra: H${hMoon} • Surya: H${hSun} • Guru: H${hJup} • Shani: H${hSat} • Rahu: H${hRahu}
+          </div>
+        </div>
+      `;
+    }
+
+    // Multi-Temple Yatra Route Planner
+    let yatraStopIds = [];
+    try {
+      const savedY = JSON.parse(localStorage.getItem('panchtattva_yatra_ids') || '[]');
+      if (Array.isArray(savedY)) yatraStopIds = savedY;
+    } catch (e) {}
+
+    window.toggleYatraStop = (templeId) => {
+      const idx = yatraStopIds.indexOf(templeId);
+      if (idx >= 0) yatraStopIds.splice(idx, 1);
+      else if (yatraStopIds.length < 6) yatraStopIds.push(templeId);
+      try { localStorage.setItem('panchtattva_yatra_ids', JSON.stringify(yatraStopIds)); } catch (e) {}
+      renderYatraPlanner();
+      renderTemples();
+    };
+
+    window.clearYatraStops = () => {
+      yatraStopIds = [];
+      try { localStorage.setItem('panchtattva_yatra_ids', '[]'); } catch (e) {}
+      renderYatraPlanner();
+      renderTemples();
+    };
+
+    function renderYatraPlanner() {
+      const body = document.getElementById('yatraPlannerBody');
+      if (!body) return;
+      const stops = yatraStopIds.map(id => BASE_TEMPLES.find(t => t.id === id)).filter(Boolean);
+      if (!stops.length) {
+        body.innerHTML = `<p class="text-[11px] text-slate-400">Tap <strong class="text-amber-300">+ Yatra</strong> on up to 6 temples below to build an ordered pilgrimage route with total distance and multi-stop Google Maps navigation.</p>`;
+        return;
+      }
+      let prevLat = userOrigin.lat, prevLon = userOrigin.lon, totalKm = 0;
+      const legsHtml = stops.map((st, idx) => {
+        const legKm = haversineKm(prevLat, prevLon, st.lat, st.lon);
+        totalKm += legKm;
+        prevLat = st.lat; prevLon = st.lon;
+        return `
+          <div class="flex items-center justify-between gap-2 p-2 rounded-xl bg-white/5 text-[11px]">
+            <div class="min-w-0 truncate">
+              <span class="font-mono text-amber-300 font-bold">#${idx + 1}</span>
+              <span class="text-white font-semibold ml-1">${st.name}</span>
+              <span class="text-slate-400 text-[10px] ml-1">(+${legKm} km)</span>
+            </div>
+            <button type="button" onclick="toggleYatraStop('${st.id}')" class="text-[10px] px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-200 shrink-0">✕</button>
+          </div>
+        `;
+      }).join('');
+
+      const dest = stops[stops.length - 1];
+      const waypts = stops.slice(0, -1).map(s => `${s.lat},${s.lon}`).join('|');
+      const multiMapUrl = `https://www.google.com/maps/dir/?api=1&origin=${userOrigin.lat},${userOrigin.lon}&destination=${dest.lat},${dest.lon}${waypts ? '&waypoints=' + encodeURIComponent(waypts) : ''}&travelmode=driving`;
+
+      body.innerHTML = `
+        <div class="space-y-1.5">
+          ${legsHtml}
+          <div class="flex items-center justify-between pt-1.5 border-t border-white/10 text-[11px]">
+            <span class="text-emerald-300 font-bold">Total Route (${stops.length} shrines): ~${totalKm} km</span>
+            <a href="${multiMapUrl}" target="_blank" rel="noopener" class="px-2.5 py-1 rounded-xl bg-emerald-500 text-slate-950 font-bold text-[11px]">🗺️ Open Multi-Stop Route ↗</a>
+          </div>
+        </div>
+      `;
+    }
+
+    function getTempleFieldTips(t) {
+      const name = (t.name || '').toLowerCase();
+      const state = t.state || '';
+      if (name.includes('tirumala') || name.includes('venkateswara')) {
+        return 'Traditional attire mandatory (Dhoti/Kurta for men; Saree/Salwar with dupatta for women). Book ₹300 Special Entry Darshan & laddu tokens online in advance.';
+      }
+      if (state === 'Kerala') {
+        return 'Traditional Kerala temple dress code applies (Mundu/Dhoti for men; Saree/Long skirt & blouse for women). Remove shirts/vests before entering Nalambalam.';
+      }
+      if (state === 'Tamil Nadu') {
+        return 'Modest traditional attire recommended; mobile phones & cameras are restricted inside inner Prakarams. Morning Abhishekam hours offer calmer darshan.';
+      }
+      if (name.includes('srisailam') || name.includes('ahobilam') || name.includes('yadadri') || name.includes('simhachalam')) {
+        return 'Hill/ghat shrine: carry light footwear for outer steps, arrive early for Abhishekam/Archana, and check ghat road timings for evening return.';
+      }
+      return 'Arrive during early morning Suprabhatam/Abhishekam or evening sandhya aarti for serene darshan; modest traditional dress recommended.';
+    }
+
+    // Calendar Vratam Filter
+    let activeCalVratFilter = 'ALL';
+    window.setCalVratFilter = (mode) => {
+      activeCalVratFilter = mode;
+      document.querySelectorAll('.calvrat-chip').forEach(btn => {
+        const active = btn.dataset.calvrat === mode;
+        btn.className = `calvrat-chip px-2 py-0.5 rounded-full text-[10px] shrink-0 ${active ? 'bg-amber-500 text-slate-950 font-bold' : 'bg-white/10 text-slate-200'}`;
+      });
+      renderCalendar();
+    };
+
     function tickClocks() {
       const now = new Date();
       const activeCity = cities[selectedCityIndex] || cities[0];
@@ -938,6 +1238,7 @@
       const dayTagEl = document.getElementById('heroDayRel');
       if (dayTagEl) dayTagEl.textContent = getRelativeDayTag(now, activeCity.tz);
       try { updateSkyAndLunarArcs(activeCity, now, sun, curMin); } catch (e) {}
+      try { updateGoldenHourAndOverlap(now, activeCity, sun); } catch (e) {}
 
       document.getElementById('cityList').innerHTML = cities.map((c, idx) => `
         <div onclick="pickCity(${idx})" class="${idx===selectedCityIndex?'gold-border bg-amber-500/10':'glass'} rounded-2xl p-3 cursor-pointer relative">
@@ -1134,18 +1435,36 @@
     }
 
     function calcMuhurthams(date, srMin, ssMin) {
-      const span = (ssMin - srMin + 1440) % 1440, part = span / 8, dow = date.getDay();
+      const span = (ssMin - srMin + 1440) % 1440, part = span / 8, muhurtaLen = span / 15, dow = date.getDay();
       const fmtRange = (s, e) => {
         const f = (m) => { const t = (Math.round(m) + 1440) % 1440, h = Math.floor(t / 60), min = t % 60; return `${String(h%12||12).padStart(2,'0')}:${String(min).padStart(2,'0')} ${h>=12?'PM':'AM'}`; };
         return `${f(s)} – ${f(e)}`;
       };
       const noon = srMin + span / 2;
       const isTe = currentLang === 'te';
+      // Classical Telugu Panchangam Durmuhurtham slots (out of 15 daytime Muhurtas, 0-indexed)
+      const durSlotsByDow = [
+        [13],       // Sunday: 14th muhurta
+        [8, 11],    // Monday: 9th & 12th muhurtas
+        [3, 10],    // Tuesday: 4th & 11th (night equivalent afternoon slot)
+        [7],        // Wednesday: 8th muhurta
+        [5, 11],    // Thursday: 6th & 12th muhurtas
+        [3, 8],     // Friday: 4th & 9th muhurtas
+        [0, 1]      // Saturday: 1st & 2nd muhurtas
+      ];
+      const durStr = durSlotsByDow[dow]
+        .map(idx => fmtRange(srMin + idx * muhurtaLen, srMin + (idx + 1) * muhurtaLen))
+        .join(' & ');
+      // Subha Samayam (auspicious daytime window derived from Abhijit / Amrit-Subha slot)
+      const subhaMorning = fmtRange(srMin + 1.5 * part, srMin + 2.5 * part);
+      const subhaAbhijit = fmtRange(noon - 24, noon + 24);
       return [
+        { name: isTe ? 'శుభ సమయం (Subha Samayam)' : 'Subha Samayam (Auspicious Window)', time: `${subhaMorning} & ${subhaAbhijit}`, type: 'shubha' },
         { name: isTe ? 'బ్రహ్మ ముహూర్తం' : 'Brahma Muhurtham', time: fmtRange(srMin - 96, srMin - 48), type: 'shubha' },
-        { name: isTe ? 'అభిజిత్ ముహూర్తం' : 'Abhijit Muhurtham', time: fmtRange(noon - 24, noon + 24), type: 'shubha' },
-        { name: isTe ? 'రాహు కాలం' : 'Rahu Kalam', time: fmtRange(srMin + ([8,2,7,5,6,4,3][dow] - 1) * part, srMin + [8,2,7,5,6,4,3][dow] * part), type: 'ashubha' },
-        { name: isTe ? 'యమగండం' : 'Yamagandam', time: fmtRange(srMin + ([5,4,3,2,1,7,6][dow] - 1) * part, srMin + [5,4,3,2,1,7,6][dow] * part), type: 'ashubha' },
+        { name: isTe ? 'అభిజిత్ ముహూర్తం' : 'Abhijit Muhurtham', time: subhaAbhijit, type: 'shubha' },
+        { name: isTe ? 'దుర్ముహూర్తం (Durmuhurtham)' : 'Durmuhurtham (Avoid New Starts)', time: durStr, type: 'ashubha' },
+        { name: isTe ? 'యమగండం (Yamagandam)' : 'Yamagandam', time: fmtRange(srMin + ([5,4,3,2,1,7,6][dow] - 1) * part, srMin + [5,4,3,2,1,7,6][dow] * part), type: 'ashubha' },
+        { name: isTe ? 'రాహు కాలం (Rahu Kalam)' : 'Rahu Kalam', time: fmtRange(srMin + ([8,2,7,5,6,4,3][dow] - 1) * part, srMin + [8,2,7,5,6,4,3][dow] * part), type: 'ashubha' },
         { name: isTe ? 'గుళిక కాలం' : 'Gulika Kalam', time: fmtRange(srMin + ([7,6,5,4,3,2,1][dow] - 1) * part, srMin + [7,6,5,4,3,2,1][dow] * part), type: 'neutral' }
       ];
     }
@@ -1632,6 +1951,7 @@
             <div class="p-2 rounded-xl bg-white/5 text-emerald-200 leading-snug">${financeNote}</div>
             <div class="p-2 rounded-xl bg-amber-500/10 text-amber-200 leading-snug">${healthRemedy}</div>
           </div>
+          ${buildGocharaTransitHtml(prevIdx)}
         </div>
       `;
     };
@@ -1982,6 +2302,7 @@
                   <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-500/15 text-amber-300">${loc.stateBadge}</span>
                   <span class="text-[10px] px-1.5 py-0.5 rounded font-semibold ${tierBadge}">${tierLabel}</span>
                   <span class="text-[10px] font-mono text-sky-300 font-bold">~${t.distKm} km away</span><span data-live-temp-key="${getCoordTempKey(t.lat, t.lon)}" data-lat="${t.lat}" data-lon="${t.lon}" class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-rose-500/15 text-rose-200 font-bold">${formatCoordTempBadge(t.lat, t.lon)}</span>
+                  <button type="button" onclick="toggleYatraStop('${t.id}')" class="text-[10px] px-2 py-0.5 rounded font-bold ${yatraStopIds.includes(t.id) ? 'bg-amber-500 text-slate-950' : 'bg-white/10 text-amber-200 border border-amber-400/30'}">${yatraStopIds.includes(t.id) ? '✓ In Yatra' : '+ Yatra'}</button>
                   ${isLocalCityTemple ? `<span class="text-[10px] px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-300 font-bold">Local City</span>` : ''}
                 </div>
                 <h3 class="text-sm font-bold text-white mt-1.5 leading-snug">${loc.displayName}</h3>
@@ -2040,6 +2361,7 @@
         `;
       }).join('');
       fetchTempsForVisibleTemples(visible);
+      renderYatraPlanner();
     };
 
     window.openTempleModal = (id, focus = 'details') => {
@@ -2063,6 +2385,7 @@
             <div><strong class="text-amber-300">🕒 Darshan Timings:</strong> <span class="text-white font-semibold">${t.timings}</span></div>
             <div><strong class="text-emerald-300">🌤️ Best Time to Visit:</strong> <span class="text-slate-100">${loc.bestTime}</span></div>
             <div><strong class="text-amber-300">🙏 Presiding Deity:</strong> <span class="text-slate-200">${t.deity}</span></div>
+            <div><strong class="text-cyan-300">🎒 Darshan & Dress-Code Tip:</strong> <span class="text-slate-200">${getTempleFieldTips(t)}</span></div>
           </div>
           <div class="p-3.5 rounded-2xl bg-amber-950/25 border border-amber-500/30 space-y-2.5">
             <h3 class="text-xs font-bold uppercase tracking-wider text-amber-300">📜 Sthala Puranam & Detailed Temple History</h3>
@@ -2452,6 +2775,35 @@
               <div class="text-white">${p.rashi} • 🌅 ${sun.sr.str12}</div>
             </div>
           </div>
+          ${(() => {
+            const mList = calcMuhurthams(selectedDate, sun.sr.total, sun.ss.total);
+            const subha = mList[0];
+            const durm = mList[3];
+            const yama = mList[4];
+            const rahu = mList[5];
+            return `
+              <div class="grid grid-cols-1 gap-1.5 text-[11px]">
+                <div class="p-2 rounded-xl bg-emerald-500/10 border border-emerald-400/25 flex items-center justify-between gap-2">
+                  <span class="text-emerald-300 font-semibold">✨ ${subha.name}</span>
+                  <span class="font-mono text-white">${subha.time}</span>
+                </div>
+                <div class="p-2 rounded-xl bg-rose-500/10 border border-rose-400/25 flex items-center justify-between gap-2">
+                  <span class="text-rose-300 font-semibold">⚠️ ${durm.name}</span>
+                  <span class="font-mono text-rose-100">${durm.time}</span>
+                </div>
+                <div class="grid grid-cols-2 gap-1.5">
+                  <div class="p-2 rounded-xl bg-amber-500/10 border border-amber-400/25">
+                    <div class="text-[10px] text-amber-300 font-semibold">⏳ ${yama.name}</div>
+                    <div class="font-mono text-white mt-0.5">${yama.time}</div>
+                  </div>
+                  <div class="p-2 rounded-xl bg-rose-500/10 border border-rose-400/25">
+                    <div class="text-[10px] text-rose-300 font-semibold">🚫 ${rahu.name}</div>
+                    <div class="font-mono text-white mt-0.5">${rahu.time}</div>
+                  </div>
+                </div>
+              </div>
+            `;
+          })()}
           ${buildFestivalStoryHtml(festsOnDate, iso, p)}
         </div>
       `;
@@ -2476,7 +2828,20 @@
         const p = getPanchangam(new Date(Date.UTC(calViewYear, calViewMonth, d, 1, 0, 0)));
         const fest = ALL_FESTIVALS.find(f => f.date === iso);
         const dot = fest ? (fest.category === 'national' ? '🇮🇳' : '🎉') : p.tithiIdx === 14 ? '🌕' : p.tithiIdx === 29 ? '🌑' : (p.tithiIdx === 10 || p.tithiIdx === 25) ? '🪔' : '';
-        html += `<button type="button" onclick="selectCalDate('${iso}')" class="p-1.5 rounded-xl flex flex-col items-center ${iso===datePicker.value?'bg-amber-500 text-slate-950 font-bold':'bg-white/5 text-slate-200'}"><span class="text-xs">${d}</span><span class="text-[9px] h-3">${dot}</span></button>`;
+        const isMatchVrat = activeCalVratFilter === 'ALL'
+          || (activeCalVratFilter === 'FEST' && Boolean(fest))
+          || (activeCalVratFilter === 'EKADASHI' && (p.tithiIdx === 10 || p.tithiIdx === 25))
+          || (activeCalVratFilter === 'POURNAMI' && p.tithiIdx === 14)
+          || (activeCalVratFilter === 'AMAVASYA' && p.tithiIdx === 29)
+          || (activeCalVratFilter === 'PRADOSHAM' && (p.tithiIdx === 12 || p.tithiIdx === 27));
+        const cellStyle = iso === datePicker.value
+          ? 'bg-amber-500 text-slate-950 font-bold'
+          : (activeCalVratFilter !== 'ALL' && isMatchVrat)
+            ? 'bg-emerald-500/25 border border-emerald-400/50 text-white font-semibold'
+            : (activeCalVratFilter !== 'ALL' && !isMatchVrat)
+              ? 'bg-white/5 text-slate-500 opacity-50'
+              : 'bg-white/5 text-slate-200';
+        html += `<button type="button" onclick="selectCalDate('${iso}')" class="p-1.5 rounded-xl flex flex-col items-center ${cellStyle}"><span class="text-xs">${d}</span><span class="text-[9px] h-3">${dot}</span></button>`;
       }
       document.getElementById('calendarGrid').innerHTML = html;
     }
@@ -2608,6 +2973,17 @@
     });
 
     setAppLanguage(currentLang);
+    (function restoreSavedTab() {
+      let savedTab = '';
+      try {
+        const hashTab = (window.location.hash || '').replace('#', '').trim();
+        if (VALID_TABS.includes(hashTab)) savedTab = hashTab;
+        else savedTab = localStorage.getItem('panchtattva_active_tab') || '';
+      } catch (e) {}
+      if (VALID_TABS.includes(savedTab) && savedTab !== 'clock') {
+        switchTab(savedTab, true);
+      }
+    })();
     fetchCityTemperatures();
     tickClocks();
     setInterval(tickClocks, 1000);
