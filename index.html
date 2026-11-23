@@ -1250,6 +1250,34 @@
       }
     ];
 
+    
+    const VIMSHOTTARI_DASHA_ORDER = [
+      { lordEn: 'Ketu', lordTe: 'కేతువు', years: 7 },
+      { lordEn: 'Shukra (Venus)', lordTe: 'శుక్రుడు', years: 20 },
+      { lordEn: 'Ravi (Sun)', lordTe: 'రవి (సూర్యుడు)', years: 6 },
+      { lordEn: 'Chandra (Moon)', lordTe: 'చంద్రుడు', years: 10 },
+      { lordEn: 'Kuja (Mars)', lordTe: 'కుజుడు', years: 7 },
+      { lordEn: 'Rahu', lordTe: 'రాహువు', years: 18 },
+      { lordEn: 'Guru (Jupiter)', lordTe: 'గురువు (బృహస్పతి)', years: 16 },
+      { lordEn: 'Shani (Saturn)', lordTe: 'శని', years: 19 },
+      { lordEn: 'Budha (Mercury)', lordTe: 'బుధుడు', years: 17 }
+    ];
+
+    const BHAVA_MEANINGS = [
+      { bhava: 1, nameEn: '1st Bhava — Lagna / Tanu', nameTe: '1వ భావం — లగ్నం / తనువు', karaka: 'Ravi / Lagna', themeEn: 'Selfhood, physical vitality, willpower, head/mind orientation, and life direction.', themeTe: 'ఆత్మబలం, శరీర దారుఢ్యం, వ్యక్తిత్వం మరియు జీవిత దిశ.' },
+      { bhava: 2, nameEn: '2nd Bhava — Dhana / Vak', nameTe: '2వ భావం — ధన / వాక్ స్థానం', karaka: 'Guru', themeEn: 'Accumulated savings, family lineage, speech clarity, truthfulness, and food/nourishment.', themeTe: 'సంచిత ధనం, కుటుంబ వాతావరణం, వాక్ చాతుర్యం మరియు ఆహార సుఖం.' },
+      { bhava: 3, nameEn: '3rd Bhava — Sahaja / Parakrama', nameTe: '3వ భావం — సహజ / పరాక్రమ స్థానం', karaka: 'Kuja', themeEn: 'Courage, initiative, siblings, communication skills, short journeys, and self-effort.', themeTe: 'ధైర్యం, సాహసం, తోబుట్టువులు, కమ్యూనికేషన్ మరియు స్వయం కృషి.' },
+      { bhava: 4, nameEn: '4th Bhava — Sukha / Matru', nameTe: '4వ భావం — సుఖ / మాతృ స్థానం', karaka: 'Chandra', themeEn: 'Motherly warmth, emotional peace, home/property, vehicles, and inner contentment.', themeTe: 'మాతృ ఆశీర్వాదం, గృహ/భూమి/వాహన సుఖం మరియు మానసిక ప్రశాంతత.' },
+      { bhava: 5, nameEn: '5th Bhava — Putra / Vidya', nameTe: '5వ భావం — పుత్ర / విద్యా స్థానం', karaka: 'Guru', themeEn: 'Intellect, wisdom, learning, creativity, children (Santana), and Purva Punya merit.', themeTe: 'విద్య, బుద్ధి కుశలత, సంతాన యోగం మరియు పూర్వజన్మ సుకృతం.' },
+      { bhava: 6, nameEn: '6th Bhava — Ripu / Roga', nameTe: '6వ భావం — శత్రు / రోగ / రుణ స్థానం', karaka: 'Shani / Kuja', themeEn: 'Service discipline, overcoming competition/obstacles, daily routines, and health resilience.', themeTe: 'సేవా దృక్పథం, పోటీని జయించే శక్తి, ఆరోగ్య సంరక్షణ మరియు క్రమశిక్షణ.' },
+      { bhava: 7, nameEn: '7th Bhava — Kalatra / Jaya', nameTe: '7వ భావం — కళత్ర / భాగస్వామ్య స్థానం', karaka: 'Shukra', themeEn: 'Marriage partnership, harmony in relationships, business alliances, and public dealings.', themeTe: 'వైవాహిక సౌఖ్యం, జీవిత భాగస్వామి సహకారం మరియు వ్యాపార భాగస్వామ్యాలు.' },
+      { bhava: 8, nameEn: '8th Bhava — Ayush / Randhra', nameTe: '8వ భావం — ఆయుః / రంధ్ర స్థానం', karaka: 'Shani', themeEn: 'Longevity, deep research, hidden mysteries, sudden transformations, and inner resilience.', themeTe: 'దీర్ఘాయుష్షు, పరిశోధనాత్మక దృష్టి, ఆకస్మిక మార్పులు మరియు అంతర్గత బలం.' },
+      { bhava: 9, nameEn: '9th Bhava — Bhagya / Pitru', nameTe: '9వ భావం — భాగ్య / పితృ / ధర్మ స్థానం', karaka: 'Guru / Ravi', themeEn: 'Fortune (Bhagyodaya), dharma, higher philosophy, gurus, father blessings, and long pilgrimages.', themeTe: 'అదృష్టం, ధర్మనిరతి, గురు కృప, పితృ ఆశీర్వాదం మరియు పుణ్యక్షేత్ర యాత్రలు.' },
+      { bhava: 10, nameEn: '10th Bhava — Karma / Rajya', nameTe: '10వ భావం — కర్మ / రాజ్య / వృత్తి స్థానం', karaka: 'Ravi / Guru / Budha / Shani', themeEn: 'Profession, leadership, public standing, execution of duty, and career milestones.', themeTe: 'వృత్తి, ఉద్యోగ/వ్యాపార ఉన్నతి, కర్తవ్య నిర్వహణ మరియు సమాజంలో గౌరవం.' },
+      { bhava: 11, nameEn: '11th Bhava — Labha / Aya', nameTe: '11వ భావం — లాభ / ఆదాయ స్థానం', karaka: 'Guru', themeEn: 'Income growth, gains from efforts, elder siblings, networks, and fulfillment of aspirations.', themeTe: 'ఆదాయ వృద్ధి, లాభాలు, మిత్ర/సమాజ సహకారం మరియు కోరికల సిద్ధి.' },
+      { bhava: 12, nameEn: '12th Bhava — Vyaya / Moksha', nameTe: '12వ భావం — వ్యయ / మోక్ష స్థానం', karaka: 'Shani', themeEn: 'Charitable/purposeful expenditure, distant/foreign settings, quiet reflection, and spiritual detachment.', themeTe: 'శుభ వ్యయం, దూర ప్రదేశాలు, ధ్యానం మరియు ఆధ్యాత్మిక చింతన.' }
+    ];
+
     function computeBirthChart(dobStr, tobStr, placeVal) {
       const [latStr, lonStr, placeName] = placeVal.split('|');
       const lat = parseFloat(latStr), lon = parseFloat(lonStr);
@@ -1262,7 +1290,6 @@
       const ascSid = getSiderealAscendant(jd, lat, lon, ayan);
       const lagnaIdx = Math.floor(ascSid / 30.0);
 
-      // Compute approximate Sidereal positions of all 9 Grahas for the South Indian Rashi Chart
       const T = (jd - 2451545.0) / 36525.0;
       const sunIdx = p.sunRashiIdx;
       const moonIdx = p.rashiIdx;
@@ -1289,9 +1316,59 @@
       houses[rahuIdx].push(isTe ? 'రాహు' : 'Ra');
       houses[ketuIdx].push(isTe ? 'కేతు' : 'Ke');
 
+      // Vimshottari Dasha starting Lord from Nakshatra index (0..26 -> mod 9)
+      const dashaStartIdx = p.nakIdx % 9;
+      const padaNum = (Math.floor(((p.moonSid % 360) / (360 / 27)) * 4) % 4) + 1;
+      const nakSpanDeg = 360 / 27;
+      const posInNakDeg = ((p.moonSid % 360) % nakSpanDeg);
+      const remFraction = Math.max(0.05, Math.min(1, 1 - (posInNakDeg / nakSpanDeg)));
+      const firstDasha = VIMSHOTTARI_DASHA_ORDER[dashaStartIdx];
+      const balanceYears = +(firstDasha.years * remFraction).toFixed(1);
+
+      const dashaTimeline = [];
+      let runningYear = y;
+      for (let i = 0; i < 9; i++) {
+        const dItem = VIMSHOTTARI_DASHA_ORDER[(dashaStartIdx + i) % 9];
+        const spanYrs = i === 0 ? Math.max(0.5, balanceYears) : dItem.years;
+        const endYear = Math.round(runningYear + spanYrs);
+        dashaTimeline.push({
+          lord: isTe ? dItem.lordTe : dItem.lordEn,
+          years: spanYrs,
+          period: `${runningYear} – ${endYear}`
+        });
+        runningYear = endYear;
+      }
+
+      const grahaList = [
+        { name: isTe ? 'లగ్నం (Ascendant)' : 'Lagna (Ascendant)', rashi: rArr[lagnaIdx], bhava: 1, role: isTe ? 'ఆత్మ, దేహబలం' : 'Self & Vitality' },
+        { name: isTe ? 'రవి (Sun)' : 'Ravi (Sun)', rashi: rArr[sunIdx], bhava: ((sunIdx - lagnaIdx + 12) % 12) + 1, role: isTe ? 'ఆత్మ, తండ్రి, గౌరవం' : 'Soul, Authority & Father' },
+        { name: isTe ? 'చంద్ర (Moon)' : 'Chandra (Moon)', rashi: rArr[moonIdx], bhava: ((moonIdx - lagnaIdx + 12) % 12) + 1, role: isTe ? 'మనస్సు, మాతృత్వం' : 'Mind, Emotions & Mother' },
+        { name: isTe ? 'కుజ (Mars)' : 'Kuja (Mars)', rashi: rArr[marsIdx], bhava: ((marsIdx - lagnaIdx + 12) % 12) + 1, role: isTe ? 'ధైర్యం, సోదరులు, శక్తి' : 'Courage, Drive & Siblings' },
+        { name: isTe ? 'బుధ (Mercury)' : 'Budha (Mercury)', rashi: rArr[mercIdx], bhava: ((mercIdx - lagnaIdx + 12) % 12) + 1, role: isTe ? 'బుద్ధి, విద్య, వాణిజ్యం' : 'Intellect, Speech & Commerce' },
+        { name: isTe ? 'గురు (Jupiter)' : 'Guru (Jupiter)', rashi: rArr[jupIdx], bhava: ((jupIdx - lagnaIdx + 12) % 12) + 1, role: isTe ? 'జ్ఞానం, సంతానం, ధనం' : 'Wisdom, Dharma & Wealth' },
+        { name: isTe ? 'శుక్ర (Venus)' : 'Shukra (Venus)', rashi: rArr[venIdx], bhava: ((venIdx - lagnaIdx + 12) % 12) + 1, role: isTe ? 'కళలు, కళత్రం, సుఖం' : 'Harmony, Arts & Marriage' },
+        { name: isTe ? 'శని (Saturn)' : 'Shani (Saturn)', rashi: rArr[satIdx], bhava: ((satIdx - lagnaIdx + 12) % 12) + 1, role: isTe ? 'కర్మ, క్రమశిక్షణ, దీర్ఘాయువు' : 'Karma, Discipline & Longevity' },
+        { name: isTe ? 'రాహు / కేతు' : 'Rahu / Ketu', rashi: `${rArr[rahuIdx].split(' ')[0]} / ${rArr[ketuIdx].split(' ')[0]}`, bhava: ((rahuIdx - lagnaIdx + 12) % 12) + 1, role: isTe ? 'ఛాయా గ్రహాలు, ఆధ్యాత్మికత' : 'Shadow Nodes & Moksha' }
+      ];
+
+      const bhavaHighlights = BHAVA_MEANINGS.map(bm => {
+        const signIdx = (lagnaIdx + bm.bhava - 1) % 12;
+        const occupants = houses[signIdx].filter(x => x !== (isTe ? 'లగ్నం' : 'Asc'));
+        return {
+          bhava: bm.bhava,
+          title: isTe ? bm.nameTe : bm.nameEn,
+          sign: rArr[signIdx],
+          occupants,
+          desc: isTe ? bm.themeTe : bm.themeEn
+        };
+      });
+
+      const moonPersonality = RASHI_PERSONALITY[p.rashiIdx] || RASHI_PERSONALITY[0];
+      const lagnaPersonality = RASHI_PERSONALITY[lagnaIdx] || RASHI_PERSONALITY[0];
+
       return {
         placeName, rashi: p.rashi, rashiIdx: p.rashiIdx, rashiLord: p.rashiLord,
-        sunRashi: p.sunRashi, nakIdx: p.nakIdx, nakshatra: p.nakshatra,
+        sunRashi: p.sunRashi, nakIdx: p.nakIdx, nakshatra: p.nakshatra, padaNum,
         tithi: p.tithi, paksha: p.paksha, yoga: p.yoga, karana: p.karana,
         lagna: rArr[lagnaIdx], lagnaIdx, lagnaDeg: (ascSid % 30).toFixed(1),
         moonDeg: (p.moonSid % 30).toFixed(1),
@@ -1299,9 +1376,23 @@
         nadi: (isTe ? NADIS_TE : NADIS_EN)[NAK_NADI[p.nakIdx]],
         yoni: (isTe ? YONIS_TE : YONIS_EN)[NAK_YONI[p.nakIdx]],
         houses,
-        personality: RASHI_PERSONALITY[p.rashiIdx]
+        grahaList,
+        bhavaHighlights,
+        dashaTimeline,
+        balanceYears,
+        firstDashaName: isTe ? firstDasha.lordTe : firstDasha.lordEn,
+        personality: {
+          element: moonPersonality.element,
+          natureEn: `${moonPersonality.natureEn} With ${rArr[lagnaIdx]} Lagna, outward demeanor blends ${lagnaPersonality.natureEn.toLowerCase()}`,
+          natureTe: `${moonPersonality.natureTe} అలాగే ${rArr[lagnaIdx]} లగ్న ప్రభావం వల్ల బాహ్య వ్యవహారంలో ${lagnaPersonality.natureTe}`,
+          strengthsEn: `${moonPersonality.strengthsEn} • Lagna Focus: ${lagnaPersonality.strengthsEn}`,
+          strengthsTe: `ప్రధాన బలాలు: ${moonPersonality.strengthsTe} • లగ్న బలం: ${lagnaPersonality.strengthsTe}`,
+          luckyEn: moonPersonality.luckyEn,
+          luckyTe: moonPersonality.luckyTe
+        }
       };
     }
+
 
     function buildSouthIndianChartHtml(chart) {
       // Standard South Indian 4x4 grid mapping:
@@ -1345,6 +1436,7 @@
       `;
     }
 
+    
     window.renderJathakam = () => {
       const name = (document.getElementById('jyName')?.value || '').trim() || 'Native';
       const dob = document.getElementById('jyDob')?.value || '1995-10-15';
@@ -1359,13 +1451,45 @@
 
       const isTe = currentLang === 'te';
       const natTxt = isTe ? chart.personality.natureTe : chart.personality.natureEn;
+      const strTxt = isTe ? chart.personality.strengthsTe : chart.personality.strengthsEn;
+      const lckTxt = isTe ? chart.personality.luckyTe : chart.personality.luckyEn;
+
+      const grahaRowsHtml = chart.grahaList.map(g => `
+        <tr class="border-b border-white/10 last:border-b-0">
+          <td class="py-1.5 pr-2 font-semibold text-amber-200">${g.name}</td>
+          <td class="py-1.5 px-2 text-white">${g.rashi}</td>
+          <td class="py-1.5 px-2 font-mono text-sky-300 text-center">H${g.bhava}</td>
+          <td class="py-1.5 pl-2 text-slate-300 text-[11px]">${g.role}</td>
+        </tr>
+      `).join('');
+
+      const dashaItemsHtml = chart.dashaTimeline.map((dItem, i) => `
+        <div class="flex items-center justify-between py-1.5 px-2.5 rounded-xl ${i === 0 ? 'bg-amber-500/15 border border-amber-400/35' : 'bg-white/5'}">
+          <div>
+            <span class="font-bold ${i === 0 ? 'text-amber-300' : 'text-white'}">${dItem.lord}</span>
+            <span class="text-[10px] text-slate-400 ml-1.5">(${dItem.years} ${isTe ? 'సం||లు' : 'yrs'})</span>
+          </div>
+          <span class="text-[11px] font-mono text-sky-300">${dItem.period}</span>
+        </div>
+      `).join('');
+
+      const bhavaCardsHtml = chart.bhavaHighlights.map(bh => `
+        <div class="p-2.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
+          <div class="flex items-center justify-between gap-2">
+            <span class="font-bold text-amber-200 text-[11px]">${bh.title}</span>
+            <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-sky-500/15 text-sky-200">${bh.sign.split(' ')[0]}</span>
+          </div>
+          <p class="text-[11px] text-slate-300 leading-snug">${bh.desc}</p>
+          ${bh.occupants.length ? `<div class="text-[10px] text-emerald-300 font-semibold">${isTe ? 'గ్రహ స్థితి' : 'Occupants'}: ${bh.occupants.join(', ')}</div>` : ''}
+        </div>
+      `).join('');
 
       document.getElementById('jathakamOutput').innerHTML = `
-        <div class="glass gold-border rounded-2xl p-4 space-y-3 text-xs">
-          <div class="border-b border-white/10 pb-2">
-            <span class="text-[10px] uppercase text-emerald-300 font-bold">● COMPLETE JANMA KUNDALI & HOROSCOPE</span>
-            <h3 class="text-base font-bold text-white">${name} — ${chart.placeName}</h3>
-            <p class="text-[11px] text-slate-400 font-mono">DOB: ${dob} • TOB: ${tob} IST</p>
+        <div class="glass gold-border rounded-2xl p-4 space-y-3.5 text-xs">
+          <div class="border-b border-white/10 pb-2.5">
+            <span class="text-[10px] uppercase text-emerald-300 font-bold">● BRIHAT PARASHARA HORA SHASTRA • FULL JANMA KUNDALI</span>
+            <h3 class="text-base font-bold text-white mt-0.5">${name} — ${chart.placeName}</h3>
+            <p class="text-[11px] text-slate-400 font-mono">DOB: ${dob} • TOB: ${tob} IST • ${isTe ? 'పాదం' : 'Pada'} ${chart.padaNum}</p>
           </div>
 
           ${buildSouthIndianChartHtml(chart)}
@@ -1381,7 +1505,7 @@
             </div>
             <div class="p-2.5 rounded-xl bg-white/5 col-span-2">
               <div class="text-[10px] text-slate-400">${isTe ? 'జన్మ నక్షత్రం & పాదం' : 'Janma Nakshatra & Pada'}</div>
-              <div class="font-bold text-amber-200 mt-0.5">${chart.nakshatra}</div>
+              <div class="font-bold text-amber-200 mt-0.5">${chart.nakshatra} • ${isTe ? 'పాదం' : 'Pada'} ${chart.padaNum}</div>
             </div>
             <div class="p-2.5 rounded-xl bg-white/5">
               <div class="text-[10px] text-slate-400">${isTe ? 'సూర్య రాశి (Sun Sign)' : 'Surya Rashi (Sun Sign)'}</div>
@@ -1401,16 +1525,50 @@
             </div>
           </div>
 
-          <div class="p-3 rounded-xl bg-amber-950/30 border border-amber-400/30 space-y-1.5">
-            <div class="text-xs font-bold text-amber-300">🌟 ${isTe ? 'వ్యక్తిత్వం, స్వభావం & జీవిత లక్షణాలు' : 'Individual Nature, Character & Strengths'}</div>
-            <div class="text-[11px] text-sky-300 font-semibold">Element & Quality: ${chart.personality.element}</div>
+          <div class="p-3 rounded-xl bg-amber-950/30 border border-amber-400/30 space-y-2">
+            <div class="text-xs font-bold text-amber-300">🌟 ${isTe ? 'వ్యక్తిత్వం, స్వభావం & జీవిత లక్షణాలు (పరాశర సిద్ధాంతం)' : 'Detailed Personality, Nature & Life Traits'}</div>
+            <div class="text-[11px] text-sky-300 font-semibold">${isTe ? 'పంచభూత తత్వం' : 'Element & Quality'}: ${chart.personality.element}</div>
             <p class="text-xs text-slate-100 leading-relaxed">${natTxt}</p>
-            <div class="text-[11px] text-emerald-300 pt-1"><strong>Key Strengths:</strong> ${chart.personality.strengthsEn}</div>
-            <div class="text-[11px] text-amber-200"><strong>Auspicious Day, Color & Gem:</strong> ${chart.personality.luckyEn}</div>
+            <div class="text-[11px] text-emerald-300 pt-1 leading-relaxed">${strTxt}</div>
+            <div class="text-[11px] text-amber-200 leading-relaxed">${lckTxt}</div>
+          </div>
+
+          <!-- NAVAGRAHA BHAVA TABLE -->
+          <div class="p-3 rounded-xl bg-white/5 border border-white/10 space-y-2">
+            <div class="text-xs font-bold text-sky-300">🪐 ${isTe ? 'నవగ్రహ స్థితి & భావ ఫలిత సూచిక' : 'Navagraha Sthiti & House (Bhava) Mapping'}</div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse text-[11px]">
+                <thead>
+                  <tr class="border-b border-white/15 text-slate-400 text-[10px]">
+                    <th class="py-1 pr-2">${isTe ? 'గ్రహం' : 'Graha'}</th>
+                    <th class="py-1 px-2">${isTe ? 'రాశి' : 'Rashi'}</th>
+                    <th class="py-1 px-2 text-center">${isTe ? 'భావం' : 'Bhava'}</th>
+                    <th class="py-1 pl-2">${isTe ? 'కారకత్వం' : 'Signification'}</th>
+                  </tr>
+                </thead>
+                <tbody>${grahaRowsHtml}</tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- VIMSHOTTARI DASHA TIMELINE -->
+          <div class="p-3 rounded-xl bg-white/5 border border-white/10 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-amber-300">⏳ ${isTe ? 'వింశోత్తరి మహాదశ క్రమం' : 'Vimshottari Mahadasha Timeline'}</span>
+              <span class="text-[10px] font-mono text-emerald-300">${isTe ? 'జన్మ దశ శేషం' : 'Birth Balance'}: ${chart.balanceYears}y (${chart.firstDashaName})</span>
+            </div>
+            <div class="space-y-1.5">${dashaItemsHtml}</div>
+          </div>
+
+          <!-- 12 BHAVAS BREAKDOWN -->
+          <div class="p-3 rounded-xl bg-white/5 border border-white/10 space-y-2">
+            <div class="text-xs font-bold text-indigo-300">🏛️ ${isTe ? 'ద్వాదశ భావ విశ్లేషణ (12 Houses of Life)' : '12 Bhava (House) Life Analysis'}</div>
+            <div class="grid grid-cols-1 gap-2">${bhavaCardsHtml}</div>
           </div>
         </div>
       `;
     };
+
 
     // 6. Rashi Phalalu & Vivaha Pontana
     let activeRashiPeriod = 'daily';
@@ -1423,6 +1581,7 @@
       renderRashiPhalalu();
     };
 
+    
     window.renderRashiPhalalu = () => {
       const box = document.getElementById('rashiPhalaluContent');
       const sel = document.getElementById('rashiPhalaluSelect');
@@ -1436,22 +1595,47 @@
 
       const rp = RASHI_PHALALU[prevIdx] || RASHI_PHALALU[0];
       const langKey = ['en', 'te', 'hi'].includes(currentLang) ? currentLang : 'en';
-      const text = rp[activeRashiPeriod][langKey] || rp[activeRashiPeriod].en;
+      const baseText = rp[activeRashiPeriod][langKey] || rp[activeRashiPeriod].en;
       const rashiTitle = langKey === 'te' ? rp.rashiTe : (langKey === 'hi' ? rp.rashiHi : rp.rashiEn);
+      const pers = RASHI_PERSONALITY[prevIdx] || RASHI_PERSONALITY[0];
+
+      const careerNote = langKey === 'te'
+        ? `వృత్తి & ఉద్యోగం: ${rp.lord} ఆధిపత్యం వల్ల బాధ్యతాయుత నిర్ణయాలు, క్రమశిక్షణతో పనిచేస్తే వృత్తిలో స్థిరత్వం లభిస్తుంది.`
+        : langKey === 'hi'
+        ? `करियर व कार्यक्षेत्र: ${rp.lord} के प्रभाव से योजनाबद्ध प्रयासों और अनुशासन से कार्य में स्थिरता व प्रगति मिलेगी।`
+        : `Career & Work: Guided by ${rp.lord}, structured execution and timely follow-ups support steady professional progress.`;
+
+      const financeNote = langKey === 'te'
+        ? `ఆర్థికం & కుటుంబం: ఆదాయ వ్యయాలను సమతుల్యం చేసుకుంటూ పెద్దల సలహాతో ముందుకు సాగడం మంచిది.`
+        : langKey === 'hi'
+        ? `आर्थिक व परिवार: आय-व्यय में संतुलन रखें और बड़ों की सलाह से महत्वपूर्ण निर्णय लें।`
+        : `Finance & Family: Balance cash flow carefully, avoid speculative haste, and value elder counsel at home.`;
+
+      const healthRemedy = langKey === 'te'
+        ? `ఆరోగ్యం & పరిహారం: ${pers.luckyTe}`
+        : langKey === 'hi'
+        ? `स्वास्थ्य व उपाय: ${pers.luckyEn}`
+        : `Health & Remedy: ${pers.luckyEn}`;
 
       box.innerHTML = `
-        <div class="p-3.5 rounded-2xl bg-white/5 border border-amber-400/25 space-y-2">
+        <div class="p-3.5 rounded-2xl bg-white/5 border border-amber-400/25 space-y-2.5">
           <div class="flex items-center justify-between">
             <div>
               <div class="text-sm font-bold text-amber-300">${rashiTitle}</div>
-              <div class="text-[10px] text-slate-400">Rashi Lord: <strong class="text-slate-200">${rp.lord}</strong></div>
+              <div class="text-[10px] text-slate-400">${langKey === 'te' ? 'రాశ్యాధిపతి' : 'Rashi Lord'}: <strong class="text-slate-200">${rp.lord}</strong></div>
             </div>
             <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-500/20 text-amber-200 uppercase font-bold">${activeRashiPeriod}</span>
           </div>
-          <p class="text-xs text-slate-100 leading-relaxed">${text}</p>
+          <p class="text-xs text-slate-100 leading-relaxed">${baseText}</p>
+          <div class="grid grid-cols-1 gap-1.5 pt-1 border-t border-white/10 text-[11px]">
+            <div class="p-2 rounded-xl bg-white/5 text-sky-200 leading-snug">${careerNote}</div>
+            <div class="p-2 rounded-xl bg-white/5 text-emerald-200 leading-snug">${financeNote}</div>
+            <div class="p-2 rounded-xl bg-amber-500/10 text-amber-200 leading-snug">${healthRemedy}</div>
+          </div>
         </div>
       `;
     };
+
 
     window.renderCompatibility = () => {
       const c1 = computeBirthChart(document.getElementById('jyDob').value, document.getElementById('jyTob').value || '08:30', document.getElementById('jyPlace').value);
