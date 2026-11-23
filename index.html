@@ -969,59 +969,140 @@
     }
 
     const cityTempCache = {};
+    function getDiurnalFallbackTemp(lat, lon, tz) {
+      const now = new Date();
+      const absLat = Math.abs(lat);
+      const m = now.getMonth();
+      const isWinter = [10, 11, 0, 1].includes(m);
+      const isSummer = [3, 4, 5].includes(m);
+      let baseMean = 26, swing = 5.5;
+      if (absLat > 35) { baseMean = isWinter ? 6 : isSummer ? 22 : 14; swing = 4.5; }
+      else if (absLat > 23) { baseMean = isWinter ? 19 : isSummer ? 34 : 26; swing = 6.5; }
+      else { baseMean = isWinter ? 23.5 : isSummer ? 33 : 27.5; swing = 5.5; }
+
+      let localHr = now.getHours() + now.getMinutes() / 60;
+      try {
+        if (tz) {
+          const parts = new Intl.DateTimeFormat('en-GB', { timeZone: tz, hour: '2-digit', minute: '2-digit', hour12: false }).format(now).split(':');
+          localHr = parseInt(parts[0], 10) + parseInt(parts[1], 10) / 60;
+        }
+      } catch (e) {}
+      // Coolest around 05:00 AM, warmest around 14:30 PM
+      const phase = ((localHr - 14.5) / 24) * 2 * Math.PI;
+      const est = Math.round((baseMean + swing * Math.cos(phase)) * 10) / 10;
+      return est.toFixed(1);
+    }
+
+    function storeUnifiedTemp(lat, lon, tempNum, weatherCode = null) {
+      if (typeof tempNum !== 'number' || Number.isNaN(tempNum)) return;
+      const rounded = Math.round(tempNum * 10) / 10;
+      const strVal = `${rounded.toFixed(1)}°C`;
+      cityTempCache[`${lat},${lon}`] = strVal;
+      cityTempCache[`${Number(lat).toFixed(2)},${Number(lon).toFixed(2)}`] = strVal;
+      if (typeof liveTempCache !== 'undefined' && typeof getCoordTempKey === 'function') {
+        const wInfo = typeof getWeatherBadgeInfo === 'function' ? getWeatherBadgeInfo(weatherCode) : { icon: '🌡️', text: 'Live' };
+        liveTempCache[getCoordTempKey(lat, lon)] = {
+          temp: rounded,
+          icon: wInfo.icon,
+          cond: wInfo.text,
+          live: true
+        };
+      }
+    }
+
+    async function fetchSingleWttrFallback(pt) {
+      try {
+        const res = await fetch(`https://wttr.in/${Number(pt.lat).toFixed(3)},${Number(pt.lon).toFixed(3)}?format=j1`, { cache: 'no-store' });
+        if (!res.ok) return false;
+        const j = await res.json();
+        const tC = parseFloat(j?.current_condition?.[0]?.temp_C);
+        if (!Number.isNaN(tC)) {
+          storeUnifiedTemp(pt.lat, pt.lon, tC, null);
+          return true;
+        }
+      } catch (e) {}
+      return false;
+    }
+
     async function fetchBatchTemperatures(coordsList) {
-      if (!coordsList.length) return;
-      const chunkSize = 25;
+      if (!coordsList.length) return false;
+      let anyLive = false;
+      const chunkSize = 10;
+      const chunks = [];
       for (let i = 0; i < coordsList.length; i += chunkSize) {
-        const chunk = coordsList.slice(i, i + chunkSize);
-        const lats = chunk.map(p => p.lat).join(',');
-        const lons = chunk.map(p => p.lon).join(',');
+        chunks.push(coordsList.slice(i, i + chunkSize));
+      }
+      await Promise.all(chunks.map(async (chunk) => {
+        const lats = chunk.map(p => Number(p.lat).toFixed(4)).join(',');
+        const lons = chunk.map(p => Number(p.lon).toFixed(4)).join(',');
         try {
-          const url = `https://api.open-meteo.com/v1/forecast?latitude=${encodeURIComponent(lats)}&longitude=${encodeURIComponent(lons)}&current=temperature_2m&timezone=auto&_=${Date.now()}`;
+          const url = `https://api.open-meteo.com/v1/forecast?latitude=${lats}&longitude=${lons}&current=temperature_2m,weather_code&hourly=temperature_2m&forecast_days=1&timezone=auto&_=${Date.now()}`;
           const res = await fetch(url, { cache: 'no-store' });
-          if (!res.ok) continue;
+          if (!res.ok) return;
           const data = await res.json();
           const arr = Array.isArray(data) ? data : [data];
           chunk.forEach((pt, idx) => {
-            const temp = arr[idx]?.current?.temperature_2m;
+            const item = arr[idx];
+            let temp = item?.current?.temperature_2m;
+            const wCode = item?.current?.weather_code ?? null;
+            if ((typeof temp !== 'number' || Number.isNaN(temp)) && Array.isArray(item?.hourly?.temperature_2m)) {
+              const hrIdx = Math.min(23, Math.max(0, new Date().getHours()));
+              temp = item.hourly.temperature_2m[hrIdx];
+            }
             if (typeof temp === 'number' && !Number.isNaN(temp)) {
-              cityTempCache[`${pt.lat},${pt.lon}`] = `${(Math.round(temp * 10) / 10).toFixed(1)}°C`;
+              storeUnifiedTemp(pt.lat, pt.lon, temp, wCode);
+              anyLive = true;
             }
           });
         } catch (e) {}
-      }
+      }));
+      return anyLive;
     }
 
     async function fetchCityTemperatures() {
       const uniquePts = [];
       const seen = new Set();
       (cities || []).forEach(c => {
-        const k = `${c.lat},${c.lon}`;
+        const k = `${Number(c.lat).toFixed(2)},${Number(c.lon).toFixed(2)}`;
         if (!seen.has(k)) { seen.add(k); uniquePts.push({ lat: c.lat, lon: c.lon }); }
       });
       if (typeof userOrigin !== 'undefined' && userOrigin) {
-        const k = `${userOrigin.lat},${userOrigin.lon}`;
+        const k = `${Number(userOrigin.lat).toFixed(2)},${Number(userOrigin.lon).toFixed(2)}`;
         if (!seen.has(k)) { seen.add(k); uniquePts.push({ lat: userOrigin.lat, lon: userOrigin.lon }); }
       }
       if (typeof BASE_TEMPLES !== 'undefined' && Array.isArray(BASE_TEMPLES)) {
-        BASE_TEMPLES.slice(0, 60).forEach(t => {
-          const k = `${t.lat},${t.lon}`;
+        BASE_TEMPLES.slice(0, 40).forEach(t => {
+          const k = `${Number(t.lat).toFixed(2)},${Number(t.lon).toFixed(2)}`;
           if (!seen.has(k)) { seen.add(k); uniquePts.push({ lat: t.lat, lon: t.lon }); }
         });
       }
       if (!uniquePts.length) return;
-      await fetchBatchTemperatures(uniquePts);
+      let gotLive = await fetchBatchTemperatures(uniquePts);
+      if (!gotLive && uniquePts.length) {
+        // Secondary live fallback via wttr.in for primary active city
+        gotLive = await fetchSingleWttrFallback(uniquePts[0]);
+      }
       lastWeatherSyncStr = new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
       const syncBadge = document.getElementById('weatherSyncBadge');
-      if (syncBadge) syncBadge.textContent = `Live Sync • ${lastWeatherSyncStr}`;
+      if (syncBadge) {
+        syncBadge.textContent = gotLive
+          ? `Live Sync • ${lastWeatherSyncStr}`
+          : `Offline/Blocked • Diurnal Est.`;
+      }
+      if (typeof refreshAllLiveTempBadges === 'function') refreshAllLiveTempBadges();
       tickClocks();
       if (typeof renderTemples === 'function') renderTemples();
     }
 
     function getCityTempLabel(c) {
-      const key = `${c.lat},${c.lon}`;
-      if (cityTempCache[key]) return `🌡️ ${cityTempCache[key]}`;
-      return `🌡️ ~${getSeasonalFallbackTemp(Math.abs(c.lat), new Date().getMonth())}°C`;
+      const exactKey = `${c.lat},${c.lon}`;
+      const roundKey = `${Number(c.lat).toFixed(2)},${Number(c.lon).toFixed(2)}`;
+      if (cityTempCache[exactKey]) return `🌡️ ${cityTempCache[exactKey]}`;
+      if (cityTempCache[roundKey]) return `🌡️ ${cityTempCache[roundKey]}`;
+      if (typeof liveTempCache !== 'undefined' && liveTempCache[roundKey]?.live) {
+        return `${liveTempCache[roundKey].icon} ${liveTempCache[roundKey].temp.toFixed(1)}°C`;
+      }
+      return `🌡️ ~${getDiurnalFallbackTemp(c.lat, c.lon, c.tz)}°C`;
     }
 
     window.deleteCity = (e, idx) => {
@@ -2898,12 +2979,7 @@
     }
 
     function getFallbackTemp(lat, monthIdx) {
-      const absLat = Math.abs(lat);
-      const isWinter = [10, 11, 0, 1].includes(monthIdx);
-      const isSummer = [3, 4, 5].includes(monthIdx);
-      if (absLat > 30) return isWinter ? 7 : isSummer ? 22 : 15;
-      if (absLat > 23) return isWinter ? 20 : isSummer ? 36 : 27;
-      return isWinter ? 25 : isSummer ? 34 : 28;
+      return getDiurnalFallbackTemp(lat, 78.5, 'Asia/Kolkata');
     }
 
     async function fetchBatchOpenMeteo(points) {
@@ -3804,6 +3880,7 @@
     tickClocks();
     setInterval(tickClocks, 1000);
     setInterval(fetchCityTemperatures, 600000);
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) fetchCityTemperatures(); });
   </script>
 </body>
 </html>
