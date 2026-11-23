@@ -969,22 +969,53 @@
     }
 
     const cityTempCache = {};
+    async function fetchBatchTemperatures(coordsList) {
+      if (!coordsList.length) return;
+      const chunkSize = 25;
+      for (let i = 0; i < coordsList.length; i += chunkSize) {
+        const chunk = coordsList.slice(i, i + chunkSize);
+        const lats = chunk.map(p => p.lat).join(',');
+        const lons = chunk.map(p => p.lon).join(',');
+        try {
+          const url = `https://api.open-meteo.com/v1/forecast?latitude=${encodeURIComponent(lats)}&longitude=${encodeURIComponent(lons)}&current=temperature_2m&timezone=auto&_=${Date.now()}`;
+          const res = await fetch(url, { cache: 'no-store' });
+          if (!res.ok) continue;
+          const data = await res.json();
+          const arr = Array.isArray(data) ? data : [data];
+          chunk.forEach((pt, idx) => {
+            const temp = arr[idx]?.current?.temperature_2m;
+            if (typeof temp === 'number' && !Number.isNaN(temp)) {
+              cityTempCache[`${pt.lat},${pt.lon}`] = `${(Math.round(temp * 10) / 10).toFixed(1)}°C`;
+            }
+          });
+        } catch (e) {}
+      }
+    }
+
     async function fetchCityTemperatures() {
-      if (!cities.length) return;
-      try {
-        const lats = cities.map(c => c.lat).join(',');
-        const lons = cities.map(c => c.lon).join(',');
-        const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lats}&longitude=${lons}&current=temperature_2m&timezone=auto`);
-        if (!res.ok) return;
-        const data = await res.json();
-        const arr = Array.isArray(data) ? data : [data];
-        cities.forEach((c, i) => {
-          const temp = arr[i]?.current?.temperature_2m;
-          if (typeof temp === 'number') cityTempCache[`${c.lat},${c.lon}`] = `${Math.round(temp * 10) / 10}°C`;
+      const uniquePts = [];
+      const seen = new Set();
+      (cities || []).forEach(c => {
+        const k = `${c.lat},${c.lon}`;
+        if (!seen.has(k)) { seen.add(k); uniquePts.push({ lat: c.lat, lon: c.lon }); }
+      });
+      if (typeof userOrigin !== 'undefined' && userOrigin) {
+        const k = `${userOrigin.lat},${userOrigin.lon}`;
+        if (!seen.has(k)) { seen.add(k); uniquePts.push({ lat: userOrigin.lat, lon: userOrigin.lon }); }
+      }
+      if (typeof BASE_TEMPLES !== 'undefined' && Array.isArray(BASE_TEMPLES)) {
+        BASE_TEMPLES.slice(0, 60).forEach(t => {
+          const k = `${t.lat},${t.lon}`;
+          if (!seen.has(k)) { seen.add(k); uniquePts.push({ lat: t.lat, lon: t.lon }); }
         });
-        lastWeatherSyncStr = new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
-        tickClocks();
-      } catch (e) {}
+      }
+      if (!uniquePts.length) return;
+      await fetchBatchTemperatures(uniquePts);
+      lastWeatherSyncStr = new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+      const syncBadge = document.getElementById('weatherSyncBadge');
+      if (syncBadge) syncBadge.textContent = `Live Sync • ${lastWeatherSyncStr}`;
+      tickClocks();
+      if (typeof renderTemples === 'function') renderTemples();
     }
 
     function getCityTempLabel(c) {
@@ -3760,20 +3791,19 @@
     });
 
     setAppLanguage(currentLang);
-    (function restoreSavedTab() {
-      let savedTab = '';
+    (function openHomeOnFreshLoad() {
       try {
-        const hashTab = (window.location.hash || '').replace('#', '').trim();
-        if (VALID_TABS.includes(hashTab)) savedTab = hashTab;
-        else savedTab = localStorage.getItem('panchtattva_active_tab') || '';
+        localStorage.setItem('panchtattva_active_tab', 'clock');
+        if (window.location.hash) {
+          history.replaceState(null, '', window.location.pathname + window.location.search);
+        }
       } catch (e) {}
-      if (VALID_TABS.includes(savedTab) && savedTab !== 'clock') {
-        switchTab(savedTab, true);
-      }
+      switchTab('clock', true);
     })();
     fetchCityTemperatures();
     tickClocks();
     setInterval(tickClocks, 1000);
+    setInterval(fetchCityTemperatures, 600000);
   </script>
 </body>
 </html>
